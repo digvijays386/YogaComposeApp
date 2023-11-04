@@ -9,27 +9,32 @@ import com.digvijay.yogaadminapp.utills.CourseState
 import dagger.hilt.android.HiltAndroidApp
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+
 @HiltAndroidApp
 class CourseViewModel @Inject constructor(
     private val dao: CourseDao
 ): ViewModel() {
 
-
     private val _state = MutableStateFlow(CourseState())
-
-    val state = _state.asStateFlow()
-
-    val courses = dao.getAllCourses()
+    private val _courses = dao.getAllCourses()
         .stateIn(
             scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(5000),
+            started = SharingStarted.WhileSubscribed(),
             initialValue = emptyList()
         )
+
+    val state = combine(_state, _courses) { state, courses ->
+        state.copy(courses = courses)
+    }.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5000),
+        initialValue = CourseState()
+    )
 
     fun onEvent(event: CourseEvent) {
         when(event) {
@@ -58,39 +63,30 @@ class CourseViewModel @Inject constructor(
                 viewModelScope.launch {
                     dao.insertCourse(course)
                 }
-                _state.update {it.copy(
-                    isAddingCourse = false,
-                    time = "",
-                    capacity = 1,
-                    dayOfWeek = "",
-                    duration = ""
-                )
+                _state.update {
+                    it.copy(
+                        isAddingCourse = false,
+                        time = "",
+                        capacity = 1,
+                        dayOfWeek = "",
+                        duration = ""
+                    )
                 }
             }
             is CourseEvent.SetCapacity -> {
-                _state.update { it.copy(
-                    capacity = event.capacity
-                ) }
+                _state.update { it.copy(capacity = event.capacity) }
             }
             is CourseEvent.SetDayOfWeek -> {
-                _state.update { it.copy(
-                    dayOfWeek = event.dayOfWeek
-                ) }
+                _state.update { it.copy(dayOfWeek = event.dayOfWeek) }
             }
             is CourseEvent.SetDuration -> {
-                _state.update { it.copy(
-                    duration = event.duration
-                ) }
+                _state.update { it.copy(duration = event.duration) }
             }
             is CourseEvent.SetTime -> {
-                _state.update { it.copy(
-                    time = event.time
-                ) }
+                _state.update { it.copy(time = event.time) }
             }
             CourseEvent.ShowDialog -> {
-                _state.update { it.copy(
-                    isAddingCourse = true
-                ) }
+                _state.update { it.copy(isAddingCourse = true) }
             }
         }
     }

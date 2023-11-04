@@ -7,7 +7,7 @@ import java.time.DayOfWeek
 @Entity
 data class CourseEntity(
     @PrimaryKey(autoGenerate = true)
-    val id: Int? = 0,
+    val id: Int? = null,
     val dayOfWeek: String,
     val time: String,
     val duration: String,
