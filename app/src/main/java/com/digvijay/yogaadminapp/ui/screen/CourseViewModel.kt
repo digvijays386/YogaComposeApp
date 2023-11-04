@@ -49,13 +49,12 @@ class CourseViewModel @Inject constructor(
                 ) }
             }
             CourseEvent.SaveCourse -> {
-
                 val dayOfWeek = state.value.dayOfWeek
                 val time = state.value.time
                 val duration = state.value.duration
                 val capacity = state.value.capacity
 
-                if (dayOfWeek.isBlank() || time.isBlank() || duration.isBlank()) {
+                if (dayOfWeek.isBlank() || time.isBlank() || duration.isBlank() || capacity == 1) {
                     return
                 }
                 val course = CourseEntity(dayOfWeek = dayOfWeek, time = time, duration = duration, capacity = capacity)
