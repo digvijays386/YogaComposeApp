@@ -79,6 +79,10 @@ fun AddCourseDialog(
             Button(onClick = { onEvent(CourseEvent.SaveCourse) }) {
                 Text(text = "Save Course")
             }
+        },
+        dismissButton = {
+
+
         }
     )
     
