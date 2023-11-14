@@ -75,6 +75,9 @@ class CourseViewModel @Inject constructor(
             is CourseEvent.SetCapacity -> {
                 _state.update { it.copy(capacity = event.capacity) }
             }
+            is CourseEvent.UpdateIndex -> {
+                _state.update { it.copy(index = event.index) }
+            }
             is CourseEvent.SetDayOfWeek -> {
                 _state.update { it.copy(dayOfWeek = event.dayOfWeek) }
             }
@@ -87,6 +90,13 @@ class CourseViewModel @Inject constructor(
             CourseEvent.ShowDialog -> {
                 _state.update { it.copy(isAddingCourse = true) }
             }
+            CourseEvent.ShowAlert -> {
+                _state.update { it.copy(shouldShowAlert = true) }
+            }
+            CourseEvent.HideAlert -> {
+                _state.update { it.copy(shouldShowAlert = false) }
+            }
+
         }
     }
 }

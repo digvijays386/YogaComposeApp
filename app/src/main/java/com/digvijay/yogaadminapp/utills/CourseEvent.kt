@@ -11,5 +11,7 @@ sealed interface CourseEvent{
     object ShowDialog: CourseEvent
     object HideDialog: CourseEvent
     data class DeleteCourse(val courseEntity: CourseEntity): CourseEvent
-
+    object ShowAlert: CourseEvent
+    object HideAlert: CourseEvent
+    data class UpdateIndex(val index: Int): CourseEvent
 }

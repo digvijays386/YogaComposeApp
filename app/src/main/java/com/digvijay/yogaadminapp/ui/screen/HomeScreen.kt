@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Delete
@@ -44,6 +45,9 @@ fun HomeScreen(
         if (state.isAddingCourse) {
             AddCourseDialog(state = state, onEvent = onEvent)
         }
+        if (state.shouldShowAlert) {
+            CommonDialog(state = state, onEvent = onEvent)
+        }
         Column {
             Text(
                 text = "Yoga Courses", fontSize = 28.sp,
@@ -61,7 +65,7 @@ fun HomeScreen(
                     modifier = Modifier.fillMaxSize(),
                     verticalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
-                    items(state.courses) { course ->
+                    itemsIndexed(state.courses) { index, course ->
                         Row(
                             modifier = Modifier
                                 .fillMaxWidth()
@@ -76,7 +80,11 @@ fun HomeScreen(
                                 Text(text = "${course.duration} hour", fontSize = 16.sp)
                                 Text(text = "${course.time} : 00", fontSize = 16.sp)
                             }
-                            IconButton(onClick = { onEvent(CourseEvent.DeleteCourse(course)) }) {
+                            IconButton(onClick = {
+                                onEvent(CourseEvent.UpdateIndex(index))
+                                onEvent(CourseEvent.ShowAlert)
+                            })
+                            {
                                 Icon(
                                     imageVector = Icons.Default.Delete,
                                     contentDescription = "delete course"

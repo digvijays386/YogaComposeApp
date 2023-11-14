@@ -8,5 +8,7 @@ data class CourseState(
     val time: String = "",
     val duration: String = "",
     val capacity: Int = 1,
-    val isAddingCourse: Boolean = false
+    val isAddingCourse: Boolean = false,
+    val shouldShowAlert: Boolean = false,
+    val index: Int = 0
 )
