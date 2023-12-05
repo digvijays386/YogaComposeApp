@@ -17,6 +17,8 @@ import com.digvijay.yogaadminapp.ui.screen.CourseViewModel
 import com.digvijay.yogaadminapp.ui.screen.HomeScreen
 import com.digvijay.yogaadminapp.ui.theme.YogaAdminAppTheme
 import dagger.hilt.android.AndroidEntryPoint
+import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
@@ -30,10 +32,14 @@ class MainActivity : ComponentActivity() {
             CourseDatabase.name
         ).build()
     }
+
+    private val okHttpClient = getOkHttpClient()
+
     private val retrofit by lazy {
         Retrofit.Builder()
-            .baseUrl("https://stuiis.cms.gre.ac.uk/COMP1424CoreWS/")
+            .baseUrl("https://stuiis.cms.gre.ac.uk/COMP1424CoreWS/comp1424cw/")
             .addConverterFactory(GsonConverterFactory.create())
+            .client(okHttpClient)
             .build()
     }
 
@@ -60,5 +66,15 @@ class MainActivity : ComponentActivity() {
                 HomeScreen(state = state, onEvent = viewModel::onEvent)
             }
         }
+    }
+
+    private fun getOkHttpClient(): OkHttpClient {
+        val loggingInterceptor = HttpLoggingInterceptor().apply {
+            level = HttpLoggingInterceptor.Level.BODY
+        }
+
+        return OkHttpClient.Builder()
+            .addInterceptor(loggingInterceptor)
+            .build()
     }
 }

@@ -39,7 +39,7 @@ object AppModule {
     @Singleton
     fun provideRetrofit(): Retrofit {
         return Retrofit.Builder()
-            .baseUrl("https://stuiis.cms.gre.ac.uk/COMP1424CoreWS/")
+            .baseUrl("https://stuiis.cms.gre.ac.uk/COMP1424CoreWS/comp1424cw/")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
     }

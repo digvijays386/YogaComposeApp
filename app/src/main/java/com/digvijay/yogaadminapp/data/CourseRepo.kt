@@ -6,12 +6,13 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
 import com.digvijay.yogaadminapp.data.local.entity.CourseEntity
+import com.digvijay.yogaadminapp.data.remote.UploadResponse
 import kotlinx.coroutines.flow.Flow
 import retrofit2.Response
 
 interface CourseRepo {
 
-    suspend fun uploadCourses(courses: List<CourseEntity>): Response<Unit>
+    suspend fun uploadCourses(courses: List<CourseEntity>): Response<UploadResponse>
 
     fun getAllCourses(): Flow<List<CourseEntity>>
 

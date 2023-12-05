@@ -59,6 +59,9 @@ fun HomeScreen(
         if (state.uploading == 2) {
             Toast.makeText(context, "Upload Failed", Toast.LENGTH_LONG).show()
         }
+        if (state.uploading == 3) {
+            Toast.makeText(context, "APi error", Toast.LENGTH_LONG).show()
+        }
         Column {
             Row {
                 Text(

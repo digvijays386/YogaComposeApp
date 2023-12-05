@@ -101,10 +101,13 @@ class CourseViewModel @Inject constructor(
                     try {
                         val response = repo.uploadCourses(state.value.courses)
                         response.body()?.let {
-                            _state.update { it.copy(uploading = 1) }
+                            if (it.uploadResponseCode == "SUCCESS")
+                                _state.update { it.copy(uploading = 1) }
+                            else
+                                _state.update { it.copy(uploading = 2) }
                         }
                     } catch (e: Exception) {
-                        _state.update { it.copy(uploading = 2) }
+                        _state.update { it.copy(uploading = 3) }
                     }
                 }
             }
