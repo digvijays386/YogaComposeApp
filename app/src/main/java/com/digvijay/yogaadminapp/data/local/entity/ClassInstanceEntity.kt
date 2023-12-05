@@ -7,7 +7,7 @@ import androidx.room.PrimaryKey
 data class ClassInstanceEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Int? = null,
-    val courseId: Int = 1,
+    val courseId: Int,
     val date: String,
     val teacher: String,
     val comments: String?
