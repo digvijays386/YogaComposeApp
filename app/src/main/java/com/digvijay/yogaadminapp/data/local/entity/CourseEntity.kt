@@ -9,11 +9,10 @@ data class CourseEntity(
     val id: Int? = null,
     val dayOfWeek: String,
     val time: String,
+    val date: String,
     val duration: String,
-    val price: Int = 40,
+    val price: Int,
     val capacity: Int,
     val desc: String = "",
     val type: String = "Yoga",
-    val instruction: String? = null,
-    val openingHour: Int = 10
 )

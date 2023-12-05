@@ -12,6 +12,12 @@
 #   public *;
 #}
 
+-keep public class com.digvijay.yogaadminapp.data.local.entity.TeacherEntity
+-keep public class com.digvijay.yogaadminapp.data.local.entity.ClassInstanceEntity
+-keep public class com.digvijay.yogaadminapp.data.local.entity.CourseEntity
+-keep public class com.digvijay.yogaadminapp.data.local.dao.CourseDao
+
+
 # Uncomment this to preserve the line number information for
 # debugging stack traces.
 #-keepattributes SourceFile,LineNumberTable

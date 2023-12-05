@@ -1,13 +1,11 @@
-package com.digvijay.yogaadminapp.ui.screen
+package com.digvijay.yogaadminapp.ui.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.digvijay.yogaadminapp.data.CourseRepo
-import com.digvijay.yogaadminapp.data.local.dao.CourseDao
 import com.digvijay.yogaadminapp.data.local.entity.CourseEntity
 import com.digvijay.yogaadminapp.utills.CourseEvent
 import com.digvijay.yogaadminapp.utills.CourseState
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
@@ -53,11 +51,24 @@ class CourseViewModel @Inject constructor(
                 val time = state.value.time
                 val duration = state.value.duration
                 val capacity = state.value.capacity
+                val type = state.value.type
+                val price = state.value.capacity
+                val desc = state.value.desc
+                val date = state.value.date
 
                 if (dayOfWeek.isBlank() || time.isBlank() || duration.isBlank() || capacity == 1) {
                     return
                 }
-                val course = CourseEntity(dayOfWeek = dayOfWeek, time = time, duration = duration, capacity = capacity)
+                val course = CourseEntity(
+                    dayOfWeek = dayOfWeek,
+                    time = time,
+                    duration = duration,
+                    capacity = capacity,
+                    price = price,
+                    type = type,
+                    desc = desc,
+                    date = date
+                )
 
                 viewModelScope.launch {
                     repo.insertCourse(course)
@@ -66,20 +77,40 @@ class CourseViewModel @Inject constructor(
                     it.copy(
                         isAddingCourse = false,
                         time = "",
-                        capacity = 1,
+                        capacity = 0,
+                        price = 0,
+                        desc = "",
                         dayOfWeek = "",
+                        date = "",
                         duration = ""
                     )
                 }
             }
+
             is CourseEvent.SetCapacity -> {
                 _state.update { it.copy(capacity = event.capacity) }
+            }
+            is CourseEvent.SetPrice -> {
+                _state.update { it.copy(price = event.price) }
+            }
+            is CourseEvent.SetType -> {
+                _state.update { it.copy(type = event.name) }
+            }
+            is CourseEvent.SetDesc -> {
+                _state.update { it.copy(desc = event.name) }
+            }
+            is CourseEvent.AddClassInstance-> {
+
+
             }
             is CourseEvent.UpdateIndex -> {
                 _state.update { it.copy(index = event.index) }
             }
             is CourseEvent.SetDayOfWeek -> {
                 _state.update { it.copy(dayOfWeek = event.dayOfWeek) }
+            }
+            is CourseEvent.SetDate -> {
+                _state.update { it.copy(date = event.date) }
             }
             is CourseEvent.SetDuration -> {
                 _state.update { it.copy(duration = event.duration) }
@@ -111,6 +142,11 @@ class CourseViewModel @Inject constructor(
                     }
                 }
             }
+            CourseEvent.OpenCourse -> {
+
+            }
+
+            else -> {}
         }
     }
 }
