@@ -1,5 +1,6 @@
 package com.digvijay.yogaadminapp.ui.screen
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -8,11 +9,11 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
@@ -21,9 +22,11 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.digvijay.yogaadminapp.utills.CourseEvent
 import com.digvijay.yogaadminapp.utills.CourseState
 
@@ -33,6 +36,8 @@ fun HomeScreen(
     state: CourseState,
     onEvent: (CourseEvent) -> Unit
 ) {
+
+    val context = LocalContext.current
     Scaffold(
         floatingActionButton = {
             FloatingActionButton(onClick = {
@@ -48,12 +53,23 @@ fun HomeScreen(
         if (state.shouldShowAlert) {
             CommonDialog(state = state, onEvent = onEvent)
         }
+        if (state.uploading == 1){
+            Toast.makeText(context, "Upload Success", Toast.LENGTH_LONG).show()
+        }
+        if (state.uploading == 2) {
+            Toast.makeText(context, "Upload Failed", Toast.LENGTH_LONG).show()
+        }
         Column {
-            Text(
-                text = "Yoga Courses", fontSize = 28.sp,
-                fontWeight = FontWeight.Bold,
-                modifier = Modifier.padding(16.dp)
-            )
+            Row {
+                Text(
+                    text = "Yoga Courses", fontSize = 28.sp,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier.padding(16.dp)
+                )
+                Button(onClick = { onEvent(CourseEvent.UploadToCloud) }) {
+                    Text("Upload Courses")
+                }
+            }
             if (state.courses.isEmpty()) {
                 Text(
                     text = "No course added yet", fontSize = 22.sp,

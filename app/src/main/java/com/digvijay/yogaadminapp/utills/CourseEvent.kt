@@ -14,4 +14,5 @@ sealed interface CourseEvent{
     object ShowAlert: CourseEvent
     object HideAlert: CourseEvent
     data class UpdateIndex(val index: Int): CourseEvent
+    data object UploadToCloud: CourseEvent
 }

@@ -10,5 +10,6 @@ data class CourseState(
     val capacity: Int = 1,
     val isAddingCourse: Boolean = false,
     val shouldShowAlert: Boolean = false,
-    val index: Int = 0
+    val index: Int = 0,
+    val uploading: Int = 0
 )
